@@ -1,0 +1,52 @@
+version: '3.8'  # Define la versión de Docker Compose
+
+services:
+  iaas:
+    build:
+      context: .
+      dockerfile: Dockerfile  # Usa el Dockerfile que creamos
+    container_name: iaas
+    ports:
+      - "8080:8080"  # Mapea el puerto 8080 del contenedor al host
+    #volumes:
+    #  - .:/app  # Mapea el directorio actual al directorio de trabajo en el contenedor
+    # environment:
+    depends_on:
+      - mysql
+    networks:
+      - iaas
+     # Nombre del contenedor
+
+  mysql:
+    image: mysql:8.0  # Usa la imagen de MySQL 8.0
+    container_name: iaas-mysqldb
+    environment:
+      MYSQL_ROOT_PASSWORD: secret
+      MYSQL_DATABASE: iaas
+      MYSQL_USER: user
+      MYSQL_PASSWORD: password
+    #ports:
+     # - "3306:3306"  # Expone el puerto de MySQL si necesitas conectarte desde fuera del contenedor
+    volumes:
+      - db_data:/var/lib/mysql  # Almacena los datos en un volumen persistente
+    networks:
+      - iaas
+
+  phpmyadmin:
+    image: phpmyadmin:latest
+    container_name: phpmyadmin
+    restart: always
+    ports:
+      - "8081:80"  # Acceso a phpMyAdmin en http://localhost:8081
+    environment:
+      PMA_HOST: mysql
+      MYSQL_ROOT_PASSWORD: secret  # Debe coincidir con la contraseña de MySQL
+    depends_on:
+      - mysql  # phpMyAdmin depende de MySQL
+    networks:
+      - iaas
+
+volumes:
+  db_data:
+networks:
+  iaas:
