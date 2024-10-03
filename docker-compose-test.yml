@@ -16,7 +16,7 @@ services:
       # Nombre del contenedor
 
   mysql:
-    image: mysql:8.0  # Usa la imagen de MySQL 8.0
+    image: mysql:5.7  # Usaba la imagen de MySQL 8.0
     container_name: iaas-mysqldb
     environment:
       MYSQL_ROOT_PASSWORD: secret
