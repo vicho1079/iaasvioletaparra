@@ -1,11 +1,13 @@
 package cl.violetaparra.iaasvioletaparra.controllers;
 
 import cl.violetaparra.iaasvioletaparra.dto.EncuestaDto;
-import cl.violetaparra.iaasvioletaparra.service.OportunidadLavadoManosService;
+import cl.violetaparra.iaasvioletaparra.service.EncuestasService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 
 import static cl.violetaparra.iaasvioletaparra.utils.EncuestaUtils.*;
@@ -14,10 +16,9 @@ import static cl.violetaparra.iaasvioletaparra.utils.EncuestaUtils.*;
 @RequestMapping("/api")
 public class TestController {
 
-    private final OportunidadLavadoManosService service;
+    private final EncuestasService service;
 
-    // Constructor Injection
-    public TestController(OportunidadLavadoManosService service) {
+    public TestController(EncuestasService service) {
         this.service = service;
     }
 
@@ -25,16 +26,18 @@ public class TestController {
     public String hello() {
         return "Hello, Spring Boot API is working!";
     }
-    @PostMapping("/oplavadomanos")
-    public ResponseEntity<?> postOportunidadLavadoManos(@RequestBody EncuestaDto encuesta){
-        if(encuesta.getTipoEncuesta() != OPORTUNIDAD_LAVADO_MANOS){
+    @PostMapping("/encuesta")
+    public ResponseEntity<?> postEncuesta(@RequestBody EncuestaDto encuesta){
+        if(!existeEncuesta(encuesta.getTipoEncuesta())){
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
         service.guardarEncuesta(encuesta);
+        Map<String, String> response = new HashMap<>();
+        response.put("Mensaje", "Encuesta guardada correctamente");
 
-        return new ResponseEntity<>(HttpStatus.OK);
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
-    @GetMapping("/oplavadomanos/{id}")
+    @GetMapping("/encuesta/{id}")
     public ResponseEntity<EncuestaDto> getOportunadadLavadoManos(@PathVariable Long id){
         Optional<EncuestaDto> encuesta = service.buscarEncuesta(id);
         return encuesta
