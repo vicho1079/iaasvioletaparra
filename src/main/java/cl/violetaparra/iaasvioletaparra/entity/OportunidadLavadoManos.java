@@ -14,7 +14,7 @@ import static cl.violetaparra.iaasvioletaparra.utils.EncuestaUtils.*;
 @Getter
 @Setter
 @NoArgsConstructor
-public class OportunidadLavadoManos extends Encuesta{
+public class OportunidadLavadoManos extends EncuestaBase {
     private int campo1;
     private int campo2;
     private int campo3;

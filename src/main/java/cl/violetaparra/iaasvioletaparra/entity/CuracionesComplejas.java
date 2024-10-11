@@ -14,7 +14,7 @@ import static cl.violetaparra.iaasvioletaparra.utils.EncuestaUtils.*;
 @Getter
 @Setter
 @NoArgsConstructor
-public class CuracionesComplejas extends Encuesta{
+public class CuracionesComplejas extends EncuestaBase {
     private int campo1;
     private int campo2;
     private int campo3;

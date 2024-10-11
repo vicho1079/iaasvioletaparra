@@ -9,15 +9,14 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import static cl.violetaparra.iaasvioletaparra.utils.EncuestaUtils.CURACIONES_COMPLEJAS;
-import static cl.violetaparra.iaasvioletaparra.utils.EncuestaUtils.LIMPIEZA_UNIDADES;
+import static cl.violetaparra.iaasvioletaparra.utils.EncuestaUtils.*;
 
 @Entity
 @Table(name = "limpieza_unidades")
 @Getter
 @Setter
 @NoArgsConstructor
-public class LimpiezaUnidades extends Encuesta{
+public class LimpiezaUnidades extends EncuestaBase {
     private int campo1;
     private int campo2;
     private int campo3;
@@ -30,8 +29,8 @@ public class LimpiezaUnidades extends Encuesta{
     public LimpiezaUnidades(EncuestaDto encuesta){
         super(encuesta.getEvaluadorId(), encuesta.getFuncionarioId(), encuesta.getFechaEvaluacion(), encuesta.getCampos());
         if(encuesta.getTipoEncuesta() != LIMPIEZA_UNIDADES){
-            throw new IllegalArgumentException("Tipo de encuesta requerido es Oportunidad lavado de manos("
-                    +LIMPIEZA_UNIDADES+") y fue entregado "+encuesta.getTipoEncuesta());
+            throw new IllegalArgumentException("Tipo de encuesta requerido es "+getNombreEncuesta(LIMPIEZA_UNIDADES)+" Codigo: "
+                    +LIMPIEZA_UNIDADES+" y fue entregado "+encuesta.getTipoEncuesta());
         }
 
         if(encuesta.getCampos().length != 8){
@@ -51,6 +50,7 @@ public class LimpiezaUnidades extends Encuesta{
     @Override
     @Transient
     public int[] getCampos() {
-        return new int[0];
+        return new int[]
+                {campo1, campo2, campo3, campo4, campo5, campo6, campo7, campo8};
     }
 }

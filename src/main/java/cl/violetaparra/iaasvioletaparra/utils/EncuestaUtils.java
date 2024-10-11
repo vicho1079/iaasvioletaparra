@@ -14,14 +14,18 @@ public class EncuestaUtils {
     public static final int OPORTUNIDAD_LAVADO_MANOS = 101;
     public static final int CURACIONES_COMPLEJAS = 102;
     public static final int LIMPIEZA_UNIDADES = 103;
+    public static final int RED_MEDICAMENTOS = 104;
     //no se lol
-    private static final int[] TIPOS_ENCUESTA = {OPORTUNIDAD_LAVADO_MANOS, CURACIONES_COMPLEJAS, LIMPIEZA_UNIDADES};
+    private static final int[] TIPOS_ENCUESTA = {
+            OPORTUNIDAD_LAVADO_MANOS, CURACIONES_COMPLEJAS,
+            LIMPIEZA_UNIDADES, RED_MEDICAMENTOS};
 
     private static final Map<Integer,String> NOMBRE_ENCUESTAS = new HashMap<>();
     static {
         NOMBRE_ENCUESTAS.put(OPORTUNIDAD_LAVADO_MANOS, "Oportunidad lavado de manos");
         NOMBRE_ENCUESTAS.put(CURACIONES_COMPLEJAS, "Curaciones complejas");
         NOMBRE_ENCUESTAS.put(LIMPIEZA_UNIDADES, "Limpieza unidades");
+        NOMBRE_ENCUESTAS.put(RED_MEDICAMENTOS, "RED Medicamentos");
     }
 
     public static boolean valorValido(int valor){

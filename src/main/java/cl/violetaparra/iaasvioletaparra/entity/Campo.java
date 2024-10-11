@@ -5,24 +5,18 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.List;
-
 @Entity
-@Table(name = "encuesta")
+@Table(name = "campo")
 @Getter
 @Setter
 @NoArgsConstructor
-public class Encuesta {
+public class Campo {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Column(nullable = false)
-    private String nombre;
-    @Column(nullable = false, unique = true)
-    private int codigo;
-
-    @OneToMany(mappedBy = "encuesta", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Campo> campos;
-
-
+    private String descripcion;
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "encuesta_id")
+    private Encuesta encuesta;
 }

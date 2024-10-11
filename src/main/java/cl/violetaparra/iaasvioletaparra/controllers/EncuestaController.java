@@ -14,11 +14,11 @@ import static cl.violetaparra.iaasvioletaparra.utils.EncuestaUtils.*;
 
 @RestController()
 @RequestMapping("/api")
-public class TestController {
+public class EncuestaController {
 
     private final EncuestasService service;
 
-    public TestController(EncuestasService service) {
+    public EncuestaController(EncuestasService service) {
         this.service = service;
     }
 
