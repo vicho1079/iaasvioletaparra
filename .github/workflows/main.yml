@@ -26,16 +26,16 @@ jobs:
 
       # Paso 4: Build Docker image with latest tag
       - name: Build Docker image with latest tag
-        run: docker build . -t ${{ secrets.DOCKER_USERNAME }}/${{ env.IMAGE_NAME }}:latest
+        run: docker build . -t ${{ secrets.DOCKER_USERNAME }}/${{ secrets.IMAGE_NAME }}:latest
 
       # Paso 5: Tag Docker image with unique tag (commit SHA)
       - name: Tag Docker image with unique tag
-        run: docker tag ${{ secrets.DOCKER_USERNAME }}/${{ env.IMAGE_NAME }}:latest ${{ secrets.DOCKER_USERNAME }}/${{ env.IMAGE_NAME }}:${{ github.sha }}
+        run: docker tag ${{ secrets.DOCKER_USERNAME }}/${{ secrets.IMAGE_NAME }}:latest ${{ secrets.DOCKER_USERNAME }}/${{ secrets.IMAGE_NAME }}:${{ github.sha }}
 
       # Paso 6: Push Docker image with latest tag
       - name: Push Docker image with latest tag
-        run: docker push ${{ secrets.DOCKER_USERNAME }}/${{ env.IMAGE_NAME }}:latest
+        run: docker push ${{ secrets.DOCKER_USERNAME }}/${{ secrets.IMAGE_NAME }}:latest
 
       # Paso 7: Push Docker image with unique tag (commit SHA)
       - name: Push Docker image with unique tag
-        run: docker push ${{ secrets.DOCKER_USERNAME }}/${{ env.IMAGE_NAME }}:${{ github.sha }}
+        run: docker push ${{ secrets.DOCKER_USERNAME }}/${{ secrets.IMAGE_NAME }}:${{ github.sha }}
