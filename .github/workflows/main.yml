@@ -1,0 +1,41 @@
+name: Build and Push Docker Image
+
+# Disparar la acción cada vez que se suba un cambio a la rama main
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Paso 1: Checkout del código del repositorio
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      # Paso 2: Log in to Docker Hub
+      - name: Log in to Docker Hub
+        run: echo "${{ secrets.DOCKER_TOKEN }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
+
+      # Paso 3: Definir la etiqueta única (SHA del commit)
+      - name: Set image tag
+        id: image_tag
+        run: echo "IMAGE_TAG=${{ github.sha }}" >> $GITHUB_ENV
+
+      # Paso 4: Build Docker image with latest tag
+      - name: Build Docker image with latest tag
+        run: docker build . -t ${{ secrets.DOCKER_USERNAME }}/${{ secrets.IMAGE_NAME }}:latest
+
+      # Paso 5: Tag Docker image with unique tag (commit SHA)
+      - name: Tag Docker image with unique tag
+        run: docker tag ${{ secrets.DOCKER_USERNAME }}/${{ secrets.IMAGE_NAME }}:latest ${{ secrets.DOCKER_USERNAME }}/${{ secrets.IMAGE_NAME }}:${{ github.sha }}
+
+      # Paso 6: Push Docker image with latest tag
+      - name: Push Docker image with latest tag
+        run: docker push ${{ secrets.DOCKER_USERNAME }}/${{ secrets.IMAGE_NAME }}:latest
+
+      # Paso 7: Push Docker image with unique tag (commit SHA)
+      - name: Push Docker image with unique tag
+        run: docker push ${{ secrets.DOCKER_USERNAME }}/${{ secrets.IMAGE_NAME }}:${{ github.sha }}
