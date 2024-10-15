@@ -1,16 +1,11 @@
 package cl.violetaparra.iaasvioletaparra.service;
 
 import cl.violetaparra.iaasvioletaparra.dto.EncuestaDto;
-import cl.violetaparra.iaasvioletaparra.entity.CuracionesComplejas;
-import cl.violetaparra.iaasvioletaparra.entity.LimpiezaUnidades;
-import cl.violetaparra.iaasvioletaparra.entity.OportunidadLavadoManos;
-import cl.violetaparra.iaasvioletaparra.entity.REDMedicamentos;
-import cl.violetaparra.iaasvioletaparra.repository.CuracionesComplejasRepository;
-import cl.violetaparra.iaasvioletaparra.repository.LimpiezaUnidadesRepository;
-import cl.violetaparra.iaasvioletaparra.repository.OportunidadLavadoManosRepository;
+import cl.violetaparra.iaasvioletaparra.entity.*;
+import cl.violetaparra.iaasvioletaparra.repository.*;
+
 import static cl.violetaparra.iaasvioletaparra.utils.EncuestaUtils.*;
 
-import cl.violetaparra.iaasvioletaparra.repository.REDMedicamentoRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -22,23 +17,26 @@ public class EncuestasService {
     private final CuracionesComplejasRepository curacionesComplejasRepository;
     private final LimpiezaUnidadesRepository limpiezaUnidadesRepository;
     private final REDMedicamentoRepository redMedicamentoRepository;
+    private final LavadoManosRepository lavadoManosRepository;
 
     public EncuestasService(OportunidadLavadoManosRepository oportunidadLavadoManosRepository,
                             CuracionesComplejasRepository curacionesComplejasRepository,
                             LimpiezaUnidadesRepository limpiezaUnidadesRepository,
-                            REDMedicamentoRepository redMedicamentoRepository) {
+                            REDMedicamentoRepository redMedicamentoRepository,
+                            LavadoManosRepository lavadoManosRepository) {
 
         this.oportunidadLavadoManosRepository = oportunidadLavadoManosRepository;
         this.curacionesComplejasRepository = curacionesComplejasRepository;
         this.limpiezaUnidadesRepository = limpiezaUnidadesRepository;
         this.redMedicamentoRepository = redMedicamentoRepository;
+        this.lavadoManosRepository = lavadoManosRepository;
     }
 
     public void guardarEncuesta(EncuestaDto encuesta){
         switch (encuesta.getTipoEncuesta()){
             case OPORTUNIDAD_LAVADO_MANOS: {
-                OportunidadLavadoManos OLMEncuesta = new OportunidadLavadoManos(encuesta);
-                oportunidadLavadoManosRepository.save(OLMEncuesta);
+                OportunidadLavadoManos olmEncuesta = new OportunidadLavadoManos(encuesta);
+                oportunidadLavadoManosRepository.save(olmEncuesta);
             }
             break;
             case CURACIONES_COMPLEJAS: {
@@ -47,13 +45,18 @@ public class EncuestasService {
             }
             break;
             case LIMPIEZA_UNIDADES: {
-                LimpiezaUnidades LUEncuesta = new LimpiezaUnidades(encuesta);
-                limpiezaUnidadesRepository.save(LUEncuesta);
+                LimpiezaUnidades luEncuesta = new LimpiezaUnidades(encuesta);
+                limpiezaUnidadesRepository.save(luEncuesta);
             }
             break;
             case RED_MEDICAMENTOS: {
-                REDMedicamentos REDMEncuesta = new REDMedicamentos(encuesta);
-                redMedicamentoRepository.save(REDMEncuesta);
+                REDMedicamentos redmEncuesta = new REDMedicamentos(encuesta);
+                redMedicamentoRepository.save(redmEncuesta);
+            }
+            break;
+            case LAVADO_MANOS: {
+                LavadoManos lmEncuesta = new LavadoManos(encuesta);
+                lavadoManosRepository.save(lmEncuesta);
             }
             break;
             default: throw new IllegalArgumentException("El tipo de encuesta que intenta crear no existe");
